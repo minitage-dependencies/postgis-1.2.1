@@ -1,26 +1,8 @@
-import logging
 import shutil
 import re
 import os
 
-import zc.buildout
-
-log = logging.getLogger('PostGIS hook')
-
-def substitute(filename, search_re, replacement):
-    """Substitutes text within the contents of ``filename`` matching
-    ``search_re`` with ``replacement``.
-    """
-    search = re.compile(search_re, re.MULTILINE)
-    text = open(filename).read()
-    text = replacement.join(search.split(text))
-
-    newfilename = '%s%s' % (filename, '.~new')
-    newfile = open(newfilename, 'w')
-    newfile.write(text)
-    newfile.close()
-    shutil.copymode(filename, newfilename)
-    shutil.move(newfilename, filename)
+from minitage.core.common import substitute
 
 def pre_configure(options, buildout):
     cwd=buildout['buildout']['parts-directory']
